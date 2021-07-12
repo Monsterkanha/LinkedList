@@ -1,0 +1,31 @@
+This is one of the best method to do partition using seperation in two list.
+1. use of senital node, and then segrate with propagating pointer.
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+ListNode* Solution::partition(ListNode* A, int B) {
+    if(!A || !A->next) return A; 
+
+    ListNode *other = new ListNode(0), *smallnode = new ListNode(0);
+    ListNode *big = other, *small = smallnode;
+    while(A){
+        if(A->val < B){
+            small->next = A;
+            small = A;
+        }
+        else{
+            big->next = A;
+            big = A;
+        }
+        A = A->next;
+    } 
+    big->next = NULL;
+    small->next = other->next;
+    return smallnode->next;
+}
