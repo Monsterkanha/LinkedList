@@ -1,0 +1,39 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+ListNode* reverse(ListNode* head){
+    if(!head || !head->next){
+        return head;
+    }
+    ListNode* node= reverse(head->next);
+    head->next->next= head;
+    head->next= NULL;
+    return node;
+}
+ListNode* Solution::solve(ListNode* A) {
+    ListNode *oddhead = A , *evenhead = new ListNode(0);
+    ListNode *odd = oddhead , *even = evenhead;
+    while(odd && odd->next){
+        even->next = odd->next;
+        even = even->next;
+        odd->next = even->next;
+        odd = odd->next;
+    }
+    even->next = NULL;
+    even = reverse(evenhead->next);
+    odd = oddhead;
+    while(even){
+        ListNode* next = even->next;
+        ListNode* temp = odd->next;
+        even->next = temp;
+        odd->next = even;
+        even = next;
+        odd = temp;
+    }
+    return oddhead;
+}
