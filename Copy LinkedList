@@ -43,3 +43,52 @@ RandomListNode* Solution::copyRandomList(RandomListNode* A) {
     }
     return dummy->next;
 }
+
+
+
+2. Copy same time and propogating 
+
+-> copy same list 1-> 1'->2 -> 2'
+and copy random pointer and last seperate .
+Node* copyRandomList(Node* head) {
+        
+        if(!head) return head;
+        
+        Node *iter , *copy , *next ;
+        iter= head;
+        while(iter){
+            next = iter->next;
+            
+            Node* temp = new Node(iter->val);
+            
+            iter->next = temp;
+            temp->next = next;
+            
+            iter = next;
+        }
+        iter = head;
+        while(iter){
+            next = iter->next->next;
+            if(iter->random )
+                iter->next->random = iter->random->next;
+            iter = next;
+        }
+        Node *ans= NULL , *copyitr;
+        iter = head;
+        while(iter){
+            next = iter->next->next;
+            copyitr = iter->next;
+            if(!ans){  
+                ans = copyitr;
+            }
+            else{
+                copy->next = copyitr;
+            }
+            copy = copyitr;
+            iter->next = next;
+            iter = next;
+        }
+        return ans;
+        
+    
+    }
