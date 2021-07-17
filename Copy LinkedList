@@ -1,0 +1,45 @@
+Use a hashmap to store the mapping from oldListNode to the newListNode.
+Whenever you encounter a new node in the oldListNode (either via random pointer or through the next pointer ),
+create the newListNode, store the mapping. 
+and update the next and random pointers of the newListNode using the mapping from the hashmap.
+
+
+
+1. First Normal copy and then settle random pointer for that create a hash to we can directly reach from old to bottom.
+
+/**
+ * Definition for singly-linked list.
+ * struct RandomListNode {
+ *     int label;
+ *     RandomListNode *next, *random;
+ *     RandomListNode(int x) : label(x), next(NULL), random(NULL) {}
+ * };
+ */
+ 
+
+RandomListNode* Solution::copyRandomList(RandomListNode* A) {
+    unordered_map<RandomListNode*, RandomListNode*> M;
+    RandomListNode* temp = A , *head;
+    RandomListNode* dummy = new RandomListNode(0);
+    head = dummy;
+    RandomListNode *f, *s;
+    while(temp){
+        RandomListNode* curr = new RandomListNode(temp->label);
+        head->next = curr;
+        head = curr;
+        M[temp] = curr;
+        temp = temp->next;
+    }
+    temp = A;
+    while(temp){
+        f = M[temp];
+        s = M[temp->random];
+        if(s == NULL){
+            f->random = NULL;
+        }
+        else
+            f->random = s;
+        temp = temp->next;
+    }
+    return dummy->next;
+}
